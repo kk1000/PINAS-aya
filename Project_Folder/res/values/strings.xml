@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Pinas-aya</string>
+    <string name="action_settings">Settings</string>
+    <string name="lbl_start">Tap Anyware to Start</string>
+    <string name="title_activity_main_menu">PINAS-aya</string>
+    <string name="btn_play">Play</string>
+    <string name="btn_help">Help</string>
+    <string name="btn_about">About</string>
+    <string name="cbox_sfx">S</string>
+    <string name="cbox_bgm">M</string>
+    <string name="title_activity_category_menu">Please select a category</string>
+    <string name="lbl_catMenuTitle">Categories</string>
+    <string name="btn_cat1">Famous People</string>
+    <string name="btn_cat2">Animals</string>
+    <string name="btn_cat3">Native Stuff</string>
+    <string name="btn_cat4">Tourist Spots</string>
+    <string name="btn_cat5">Historical Events</string>
+    <string name="title_activity_level_selection">Please select a level to play</string>
+    <string name="lbl_lvlSelectTitle">Category Name</string>
+    <string name="btn_lvl1">Level 1</string>
+    <string name="btn_lvl2">Level 2</string>
+    <string name="btn_lvl3">Level 3</string>
+    <string name="btn_lvlStateLocked">Locked</string>
+    <string name="btn_lvlStateUnlocked">Tap to choose</string>
+    <string name="title_activity_level_status">Tap an image to play</string>
+    <string name="lbl_lvlStatusTitle">Category Name</string>
+    <string name="lbl_lvlStatusLevelNumber">Level #</string>
+    <string name="title_activity_level_image">PINAS-aya</string>
+    <string name="lbl_lvlImageCategory">Category</string>
+    <string name="btn_viewDetails">View Details/Hint</string>
+    <string name="title_activity_puzzle_image">PuzzleImageActivity</string>
+
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.pinas_aya"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.pinas_aya.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.MainMenuActivity"
+            android:label="@string/title_activity_main_menu" >
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.CategoryMenuActivity"
+            android:label="@string/title_activity_category_menu" >
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.LevelSelectionActivity"
+            android:label="@string/title_activity_level_selection" >
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.LevelStatusActivity"
+            android:label="@string/title_activity_level_status" >
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.LevelImageActivity"
+            android:label="@string/title_activity_level_image" >
+        </activity>
+        <activity
+            android:name="com.example.pinas_aya.PuzzleImageActivity"
+            android:label="@string/title_activity_puzzle_image" >
+        </activity>
+    </application>
+
+</manifest>
