@@ -44,7 +44,7 @@
         android:layout_height="50dp"
         android:layout_above="@+id/btn_viewDetails"
         android:layout_alignRight="@+id/btn_viewDetails"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_r_arrow" />
 
     <EditText
         android:id="@+id/txt_answer"

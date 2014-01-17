@@ -250,4 +250,14 @@ public class GameManager{
     	
     }
     
+    public boolean isCurrentStageLocked()
+    {
+    	prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+    	
+    	if(!prefs.getBoolean(""+this.currentCategory+"-"+this.currentLevel+"-"+(this.currentStage-1), false))
+    	{
+    		return true;
+    	}
+		return false;
+    }
 }

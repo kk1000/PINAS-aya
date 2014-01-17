@@ -4,29 +4,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 //@SuppressLint("NewApi")
 public class PuzzleImageActivity extends Activity {
 
-	ImageView[] img_piece;
-	Integer currentSelectedIndex;
+	private String imgString;
+	private int stageImgResourceId;
+	private ImageView[] img_piece;
+	private Integer currentSelectedIndex;
 	
-	Bitmap[] finalBMaps1 = null;
+	private Bitmap[] finalJumbledBMaps = null;
 	private int[] answer;
+	
+	private TextView lbl_lvlImageCategory;
+	private ImageButton btn_imgHint;
+	private Button btn_viewDetails;
+	// Generally for screen
+	private Display display;
+	private Point size;
+	private int screenWidth;
+	
 	
 	private GameManager sharedData;
 	
@@ -36,16 +52,126 @@ public class PuzzleImageActivity extends Activity {
 		setContentView(R.layout.activity_puzzle_image);
 		
 		sharedData = GameManager.getInstance();
+		// get the screen size
+		display = getWindowManager().getDefaultDisplay();
+		size = new Point();
+		display.getSize(size);
+		screenWidth = size.x;
 		
-		TableLayout tl = (TableLayout)findViewById(R.id.tbl_imgArea);
-		TableRow row = new TableRow(this);
-		String imgString = "img_"+sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+sharedData.getStage();
+		imgString = "img_"+sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+sharedData.getStage();
 		//String imgString = "ic_launcher";
-		
-		int resourceId = getResources().getIdentifier (imgString, "drawable", getPackageName().toString());
+		// for later use
+		stageImgResourceId = getResources().getIdentifier (imgString, "drawable", getPackageName().toString());
 		//int img_resourceId = getResources().getIdentifier (imgString, "layout", getPackageName().toString());
 		
-		Bitmap bMap = BitmapFactory.decodeResource(getResources(),resourceId);
+		// Early instructions
+		showDialogWithMessage("How to play?\nTap a piece once\nTap another to switch there posistions\nFix the image");
+		
+		
+		lbl_lvlImageCategory= (TextView)findViewById(R.id.lbl_lvlImageCategory);
+		lbl_lvlImageCategory.setText(sharedData.getCategoryName());
+		
+		
+		btn_viewDetails = (Button)findViewById(R.id.btn_viewDetails);
+		btn_viewDetails.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				showDialogWithMessage("Details here");
+				
+			}});
+		
+		
+		setupImageHint();
+		
+		generateStageImage();
+		
+		
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.puzzle_image, menu);
+		return true;
+	}
+	
+	private void showDialogWithMessage(String message)
+	{
+		// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setMessage(message)
+		       .setTitle(getResources().getString(R.string.app_name)).setNeutralButton("Dismiss", new DialogInterface.OnClickListener()
+		       {
+		    	   @Override
+		    	   public void onClick(DialogInterface dialog, int which) { dialog.dismiss();}
+		       });
+		
+		
+		// 3. Get the AlertDialog from create()
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+	
+	private void setupImageHint()
+	{
+		btn_imgHint = (ImageButton)findViewById(R.id.btn_imgHint);
+		btn_imgHint.setImageResource(stageImgResourceId);
+		btn_imgHint.setScaleType(ScaleType.FIT_XY);
+		btn_imgHint.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				
+				// 1. Instantiate an AlertDialog.Builder with its constructor
+				AlertDialog.Builder builder = new AlertDialog.Builder(PuzzleImageActivity.this);
+				
+				final ImageView imgView = new ImageView(PuzzleImageActivity.this);
+				
+				Bitmap bMap = BitmapFactory.decodeResource(getResources(),stageImgResourceId);
+				
+				int width = bMap.getWidth();
+			    int height = bMap.getHeight();
+			    int newWidth = (int) (screenWidth- 15);
+				int newHeight = newWidth;
+			    
+				float scaleWidth = ((float) newWidth) / width;
+			    float scaleHeight = ((float) newHeight) / height;
+
+			     Matrix matrix = new Matrix();
+
+			     matrix.postScale(scaleWidth, scaleHeight);
+			     
+			     // this will create image with new size
+			     Bitmap strechedBMap = Bitmap.createBitmap(bMap, 0, 0,width, height, matrix, true);
+				
+				imgView.setImageBitmap(strechedBMap);
+				
+				// 2. Chain together various setter methods to set the dialog characteristics
+				builder.setView(imgView).setNeutralButton("Dismiss", new DialogInterface.OnClickListener()
+			       {
+			    	   @Override
+			    	   public void onClick(DialogInterface dialog, int which) { dialog.dismiss();}
+			       });
+							
+				
+				// 3. Get the AlertDialog from create()
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			
+				
+			}});
+	}
+	
+	private void generateStageImage()
+	{
+		TableLayout tl = (TableLayout)findViewById(R.id.tbl_imgArea);
+		TableRow row = new TableRow(this);
+		
+		Bitmap bMap = BitmapFactory.decodeResource(getResources(),stageImgResourceId);
 		Bitmap croppedBMap, strechedBMap;
 		Bitmap[] finalBMaps = null;
 		int x = 0;
@@ -76,10 +202,7 @@ public class PuzzleImageActivity extends Activity {
 		
 		finalBMaps = new Bitmap[img_piece.length];
 		// here we set the size property for each piece
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int screenWidth = size.x;
+		
 		newWidth = (int) (screenWidth / Math.sqrt(img_piece.length) - 15);
 		newHeight = newWidth;	
 		
@@ -105,7 +228,7 @@ public class PuzzleImageActivity extends Activity {
 		     matrix = new Matrix();
 
 		     matrix.postScale(scaleWidth, scaleHeight);
-		     //matrix.postRotate(x);
+		     
 		     // this will create image with new size
 		     strechedBMap = Bitmap.createBitmap(croppedBMap, 0, 0,width, height, matrix, true);
 		     // Image display factor
@@ -118,38 +241,52 @@ public class PuzzleImageActivity extends Activity {
 		     img_piece[i].setDrawingCacheEnabled(false);
 		     
 		     //img_piece[i].setImageResource(resourceId); //test
-		     final int ii = i;
+		     final int loopIndexHolder = i;
+		     
 		     
 		     img_piece[i].setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(View v) 
 					{
-						int currentIndex = ii;
-						Log.v("CURRENT INDEX: ", ""+currentIndex);
-						Log.v("LAST SELECTED INDEX: ", ""+currentSelectedIndex);
-						v.refreshDrawableState();
+						int currentIndex = loopIndexHolder;
+						//Log.v("CURRENT INDEX: ", ""+currentIndex);
+						//Log.v("LAST SELECTED INDEX: ", ""+currentSelectedIndex);
+						
+						
 						
 						if(currentSelectedIndex != null)
 						{
-							// This will switch the imgaes
-							img_piece[currentIndex].setImageBitmap(finalBMaps1[currentSelectedIndex]);
-							img_piece[currentSelectedIndex].setImageBitmap(finalBMaps1[currentIndex]);
 							
-							Bitmap img = finalBMaps1[currentIndex];
-							finalBMaps1[currentIndex] = finalBMaps1[currentSelectedIndex];
-							finalBMaps1[currentSelectedIndex] = img;
+							img_piece[currentSelectedIndex].setAlpha(1.0f);
+							//img_piece[currentSelectedIndex].setBackgroundColor(Color.TRANSPARENT);
+							// This will switch the imgaes
+							img_piece[currentIndex].setImageBitmap(finalJumbledBMaps[currentSelectedIndex]);
+							img_piece[currentSelectedIndex].setImageBitmap(finalJumbledBMaps[currentIndex]);
+							
+							Bitmap img = finalJumbledBMaps[currentIndex];
+							finalJumbledBMaps[currentIndex] = finalJumbledBMaps[currentSelectedIndex];
+							finalJumbledBMaps[currentSelectedIndex] = img;
 
 							int temp = answer[currentIndex];
 							answer[currentIndex] = answer[currentSelectedIndex];
 							answer[currentSelectedIndex] = temp;
-							if(checkAnswer()){
-								Log.v("ANSWER:","TAPOS NA");
+							
+							if(checkAnswer())
+							{
+								// shows a toast alert
+								//Toast.makeText(getApplicationContext(), "Stage complete!",Toast.LENGTH_SHORT).show();
+								showDialogWithMessage("Stage Complete!");
+								sharedData.completeCurrentStage();
+								//Log.v("ANSWER:","TAPOS NA");
 							}
 							currentSelectedIndex = null;
+							
 						}
 						else
 						{
-							currentSelectedIndex =  ii;
+							currentSelectedIndex =  currentIndex;
+							img_piece[currentSelectedIndex].setAlpha(0.4f);
+							//img_piece[currentSelectedIndex].setBackgroundColor(Color.BLUE);
 						}
 						
 					}
@@ -183,7 +320,7 @@ public class PuzzleImageActivity extends Activity {
 		Collections.shuffle(listOfRand);
 		
 		// Then here we assign them as indices
-		finalBMaps1 = new Bitmap[img_piece.length];
+		finalJumbledBMaps = new Bitmap[img_piece.length];
 		answer = new int[img_piece.length];
 		for(int i = 0; i < img_piece.length; i++)
 		{
@@ -192,27 +329,22 @@ public class PuzzleImageActivity extends Activity {
 			Bitmap img = finalBMaps[listOfRand.get(i)];
 			img_piece[i].setImageBitmap(img);
 			
-			finalBMaps1[i] = img;
+			finalJumbledBMaps[i] = img;
 			answer[i] = listOfRand.get(i);
 		}
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.puzzle_image, menu);
-		return true;
-	}
-	
 	
 	private boolean checkAnswer(){
 		try{
 			for(int i = 0; i < answer.length; i ++){
-				Log.v("ANSWER:",answer[i] + " " +answer[i+1]);
-				if(answer[i]+1!=answer[i+1]) return false;
+				//Log.v("ANSWER:",answer[i] + " " +answer[i+1]);
+
+				if((answer[i]+1)!=answer[(i+1)]) return false;
 			}
 		}catch(Exception e){
-			Log.v("ANSWER:","TAPOS NA");
+			//Log.v("ANSWER:","TAPOS NA");
+			// shows a toast alert
+			//Toast.makeText(getApplicationContext(), "Stage complete!",Toast.LENGTH_SHORT).show();
 		}
 		return true;
 	}

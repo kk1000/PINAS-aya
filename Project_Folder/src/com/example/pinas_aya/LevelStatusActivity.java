@@ -32,34 +32,6 @@ public class LevelStatusActivity extends Activity {
 		txt_lvlStatusLevelNumber = (TextView)findViewById(R.id.txt_lvlStatusLevelNumber);
 		txt_lvlStatusLevelNumber.setText("Level "+ sharedData.getLevel());
 		
-		/*
-		TableLayout tl = (TableLayout)findViewById(R.id.table);
-
-		TableRow row = null;
-		row = new TableRow(this);
-		for(int i = 0; i<15; i++){
-			if((i)%5==0) {
-				tl.addView(row);
-				row = new TableRow(this);
-			}
-			Button button = new Button(this);
-			button.setText("asdas");
-			button.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-			});
-			row.addView(button);
-			
-			
-		}
-		
-		*/
-		
 		img_lvlStages[0] = (ImageView)findViewById(R.id.img_lvlStage1);
 		img_lvlStages[1] = (ImageView)findViewById(R.id.img_lvlStage2);
 		img_lvlStages[2] = (ImageView)findViewById(R.id.img_lvlStage3);
@@ -75,9 +47,6 @@ public class LevelStatusActivity extends Activity {
 		img_lvlStages[12] = (ImageView)findViewById(R.id.img_lvlStage13);
 		img_lvlStages[13] = (ImageView)findViewById(R.id.img_lvlStage14);
 		img_lvlStages[14] = (ImageView)findViewById(R.id.img_lvlStage15);
-		
-		
-		
 		
 		for(final ImageView img : img_lvlStages)
 		{
@@ -215,12 +184,19 @@ public class LevelStatusActivity extends Activity {
 		int resourceId;
 		for(int i = 1; i <= 15; i++)
 		{
+			//Log.v("BOOL VALUE: ",""+sharedData.isCurrentStageLocked());
+			if(!sharedData.isStageLocked(sharedData.getCategory(), sharedData.getLevel(), i) || i == 1)
+			{
+				imgString += sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+i;
+				
+				resourceId = getResources().getIdentifier (imgString, "drawable", getPackageName().toString());
+				img_lvlStages[i-1].setImageResource(resourceId);
+			}
+			else
+			{
+				img_lvlStages[i-1].setImageResource(R.drawable.ic_qmark_clear);
+			}
 			
-			imgString += sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+i;
-			//
-			//System.out.println("IMAGE " + imgString);
-			resourceId = getResources().getIdentifier (imgString, "drawable", getPackageName().toString());
-			img_lvlStages[i-1].setImageResource(resourceId);
 			
 			imgString = "img_";
 			

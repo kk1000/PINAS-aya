@@ -30,6 +30,6 @@
     <string name="title_activity_level_image">PINAS-aya</string>
     <string name="lbl_lvlImageCategory">Category</string>
     <string name="btn_viewDetails">View Details/Hint</string>
-    <string name="title_activity_puzzle_image">PuzzleImageActivity</string>
+    <string name="title_activity_puzzle_image">Fix the image</string>
 
 </resources>

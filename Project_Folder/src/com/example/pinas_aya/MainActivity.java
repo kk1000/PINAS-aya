@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
 		sharedData = GameManager.getInstance();
 		sharedData.setContext(getApplicationContext()); // this only needs to be called once
 		
+		//this.set
+		
 		// This will load the answer
 		parseXml();
 		

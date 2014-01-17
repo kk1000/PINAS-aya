@@ -38,6 +38,8 @@ public class LevelImageActivity extends Activity {
 		
 		sharedData = GameManager.getInstance();
 		
+		showDialogWithMessage("How to play?\nGuess the word!");
+		
 		lbl_lvlImageCategory = (TextView)findViewById(R.id.lbl_lvlImageCategory);
 		lbl_lvlImageCategory.setText(sharedData.getCategoryName());
 		
@@ -60,22 +62,9 @@ public class LevelImageActivity extends Activity {
 		btn_viewDetails.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) {
-				// 1. Instantiate an AlertDialog.Builder with its constructor
-				AlertDialog.Builder builder = new AlertDialog.Builder(LevelImageActivity.this);
-
-				// 2. Chain together various setter methods to set the dialog characteristics
-				builder.setMessage("Details Here")
-				       .setTitle(getResources().getString(R.string.app_name)).setNeutralButton("Dismiss", new DialogInterface.OnClickListener()
-				       {
-				    	   @Override
-				    	   public void onClick(DialogInterface dialog, int which) { dialog.dismiss();}
-				       });
-				
-				
-				// 3. Get the AlertDialog from create()
-				AlertDialog dialog = builder.create();
-				dialog.show();
+			public void onClick(View v) 
+			{
+				showDialogWithMessage("Details here");
 			}
 		});
 		
@@ -89,11 +78,10 @@ public class LevelImageActivity extends Activity {
 				
 				String input = txt_answer.getText().toString();
 				
-				if(input.length() > 0)
+				if(input.length() > 0 && validateAnswer(input))
 				{
-					System.out.println(""+sharedData.getAnswers());
-					
-					validateAnswer(input);
+					//System.out.println(""+sharedData.getAnswers());
+					showDialogWithMessage("Stage Complete!");
 				}
 				
 			}
@@ -113,7 +101,26 @@ public class LevelImageActivity extends Activity {
 		return true;
 	}
 	
-	public void validateAnswer(String input)
+	private void showDialogWithMessage(String message)
+	{
+		// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setMessage(message)
+		       .setTitle(getResources().getString(R.string.app_name)).setNeutralButton("Dismiss", new DialogInterface.OnClickListener()
+		       {
+		    	   @Override
+		    	   public void onClick(DialogInterface dialog, int which) { dialog.dismiss();}
+		       });
+		
+		
+		// 3. Get the AlertDialog from create()
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+	
+	private boolean validateAnswer(String input)
 	{
 		//AnswerObject asshole = sharedData.getAnswers().
 		
@@ -129,42 +136,22 @@ public class LevelImageActivity extends Activity {
 						|| ((ans.getAnswer3() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer3()).find(): false)
 						|| ((ans.getAnswer4() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer4()).find(): false))
 				{
-					// shows a toast alert
-					Toast.makeText(getApplicationContext(), "Stage complete!",
-							   Toast.LENGTH_SHORT).show();
+					
 					sharedData.completeCurrentStage();
-					break;
+					return true;
 				}
 				else
 				{
 					// shows a toast alert
 					Toast.makeText(getApplicationContext(), "Not even close!",
 							   Toast.LENGTH_SHORT).show();
-					break;
-				}
-					/*
-				if(input.toLowerCase().contains(ans.getAnswer1().toLowerCase())
-						|| input.toLowerCase().contains(ans.getAnswer2().toLowerCase())
-						|| input.toLowerCase().contains(ans.getAnswer3().toLowerCase())
-						|| input.toLowerCase().contains(ans.getAnswer4().toLowerCase()))
-				{
-					// shows a toast alert
-					Toast.makeText(getApplicationContext(), "Stage complete!",
-							   Toast.LENGTH_SHORT).show();
-					sharedData.completeCurrentStage();
-					break;
-				}
-				else
-				{
-					// shows a toast alert
-					Toast.makeText(getApplicationContext(), "Not even close!",
-							   Toast.LENGTH_SHORT).show();
-					break;
+					return false;
+					
 				}
 				
-				*/
 			}
 		}
+		return false;
 	}
 
 }
