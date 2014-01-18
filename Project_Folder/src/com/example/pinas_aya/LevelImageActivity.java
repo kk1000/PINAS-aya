@@ -38,6 +38,8 @@ public class LevelImageActivity extends Activity {
 		
 		sharedData = GameManager.getInstance();
 		
+		sharedData.initializeAudio(this);
+		
 		showDialogWithMessage("How to play?\nGuess the word!");
 		
 		lbl_lvlImageCategory = (TextView)findViewById(R.id.lbl_lvlImageCategory);
@@ -81,7 +83,12 @@ public class LevelImageActivity extends Activity {
 				if(input.length() > 0 && validateAnswer(input))
 				{
 					//System.out.println(""+sharedData.getAnswers());
+					sharedData.playTada();
 					showDialogWithMessage("Stage Complete!");
+				}
+				else
+				{
+					sharedData.playKidLaugh();
 				}
 				
 			}
@@ -99,6 +106,19 @@ public class LevelImageActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.level_image, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
+	
+	@Override
+	protected void onResume() {
+		sharedData.playMainBGM();
+		super.onResume();
 	}
 	
 	private void showDialogWithMessage(String message)

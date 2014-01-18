@@ -32,6 +32,9 @@ public class MainActivity extends Activity {
 		sharedData = GameManager.getInstance();
 		sharedData.setContext(getApplicationContext()); // this only needs to be called once
 		
+		sharedData.initializeAudio(this);
+		
+		//sharedData.playMainBGM();
 		//this.set
 		
 		// This will load the answer
@@ -47,6 +50,18 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
+	
+	@Override
+	protected void onResume() {
+		sharedData.playMainBGM();
+		super.onResume();
+	}
 	
 	// This example shows an Activity, but you would use the same approach if
 	// you were subclassing a View.

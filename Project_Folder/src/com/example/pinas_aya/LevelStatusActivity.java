@@ -26,6 +26,8 @@ public class LevelStatusActivity extends Activity {
 		
 		sharedData = GameManager.getInstance();
 		
+		sharedData.initializeAudio(this);
+		
 		txt_lvlStatusTitle = (TextView)findViewById(R.id.txt_lvlStatusTitle);
 		txt_lvlStatusTitle.setText(sharedData.getCategoryName());
 		
@@ -55,13 +57,12 @@ public class LevelStatusActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					
-					if(v.getId()==R.id.btn_cat1){
-						// do somthing here..
-					}
+					
 					
 					// There's no other way though
 					if(img == img_lvlStages[0])
 					{
+						sharedData.playTick();
 						setStage(1);
 					}
 					else if(img == img_lvlStages[1] && !isStageLocked(2))
@@ -136,10 +137,17 @@ public class LevelStatusActivity extends Activity {
 	}
 
 	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
+	
+	@Override
 	protected void onResume() {
-		super.onResume();
-		
+		sharedData.playMainBGM();
 		setTileImages();
+		super.onResume();
 	}
 	
 	void goToLevelImage()
@@ -171,10 +179,11 @@ public class LevelStatusActivity extends Activity {
 			// shows a toast alert
 			Toast.makeText(getApplicationContext(), "Stage is still Locked", 
 					Toast.LENGTH_SHORT).show();
-						
+			sharedData.playWoosh();			
 			return true;
 		}
 		
+		sharedData.playTick();	
 		return false;
 	}
 

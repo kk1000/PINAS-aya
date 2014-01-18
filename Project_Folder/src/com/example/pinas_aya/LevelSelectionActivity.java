@@ -42,25 +42,9 @@ public class LevelSelectionActivity extends Activity {
 		
 		sharedData = GameManager.getInstance();
 		
-		/*
-		ListView lv = (ListView) findViewById(R.id.lv_levels);
-
-        
-        ArrayList<String> your_array_list = new ArrayList<String>();
-        your_array_list.add("foo");
-        your_array_list.add("bar");
-
-        // This is the array adapter, it takes the context of the activity as a 
-        // first parameter, the type of list view as a second parameter and your 
-        // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this, 
-                android.R.layout.simple_list_item_1,
-                your_array_list );
-
-        lv.setAdapter(arrayAdapter); 
-        
-        */
+		sharedData.initializeAudio(this);
+		
+		
 		// The Category Name
 		txt_lvlSelectTitle = (TextView)findViewById(R.id.txt_lvlSelectTitle);
 		
@@ -107,8 +91,11 @@ public class LevelSelectionActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					
+					
+					
 					if(btn == btn_lvl1)
 					{
+						sharedData.playTick();
 						sharedData.setLevel(1);
 						goToLevelStatus();
 					}
@@ -121,9 +108,11 @@ public class LevelSelectionActivity extends Activity {
 							// shows a toast alert
 							Toast.makeText(getApplicationContext(), "Level is still Locked",
 									   Toast.LENGTH_SHORT).show();
+							sharedData.playWoosh();
 						}
 						else
 						{
+							sharedData.playTick();
 							sharedData.setLevel(2);
 							goToLevelStatus();
 						}
@@ -136,9 +125,11 @@ public class LevelSelectionActivity extends Activity {
 							// shows a toast alert
 							Toast.makeText(getApplicationContext(), "Level is still Locked",
 									   Toast.LENGTH_SHORT).show();
+							sharedData.playWoosh();
 						}
 						else
 						{
+							sharedData.playTick();
 							sharedData.setLevel(3);
 							goToLevelStatus();
 						}
@@ -155,12 +146,18 @@ public class LevelSelectionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.level_selection, menu);
 		return true;
 	}
+	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
 	
 	@Override
 	protected void onResume() {
-		super.onResume();
-		
+		sharedData.playMainBGM();
 		setupProgress();
+		super.onResume();
 	}
 	
 	void goToLevelStatus()

@@ -52,6 +52,9 @@ public class PuzzleImageActivity extends Activity {
 		setContentView(R.layout.activity_puzzle_image);
 		
 		sharedData = GameManager.getInstance();
+		
+		sharedData.initializeAudio(this);
+		
 		// get the screen size
 		display = getWindowManager().getDefaultDisplay();
 		size = new Point();
@@ -96,6 +99,19 @@ public class PuzzleImageActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.puzzle_image, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
+	
+	@Override
+	protected void onResume() {
+		sharedData.playMainBGM();
+		super.onResume();
 	}
 	
 	private void showDialogWithMessage(String message)
@@ -257,6 +273,8 @@ public class PuzzleImageActivity extends Activity {
 						if(currentSelectedIndex != null)
 						{
 							
+							sharedData.playWoosh();
+							
 							img_piece[currentSelectedIndex].setAlpha(1.0f);
 							//img_piece[currentSelectedIndex].setBackgroundColor(Color.TRANSPARENT);
 							// This will switch the imgaes
@@ -275,6 +293,7 @@ public class PuzzleImageActivity extends Activity {
 							{
 								// shows a toast alert
 								//Toast.makeText(getApplicationContext(), "Stage complete!",Toast.LENGTH_SHORT).show();
+								sharedData.playTada();
 								showDialogWithMessage("Stage Complete!");
 								sharedData.completeCurrentStage();
 								//Log.v("ANSWER:","TAPOS NA");

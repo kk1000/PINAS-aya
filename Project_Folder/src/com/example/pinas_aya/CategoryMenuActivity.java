@@ -25,6 +25,7 @@ public class CategoryMenuActivity extends Activity {
 		
 		sharedData = GameManager.getInstance();
 		
+		sharedData.initializeAudio(this);
 		
 		btn_cat1 = (Button)findViewById(R.id.btn_cat1);
 		btn_cat2 = (Button)findViewById(R.id.btn_cat2);
@@ -46,6 +47,8 @@ public class CategoryMenuActivity extends Activity {
 			{
 				@Override
 				public void onClick(View arg0) {
+					
+					sharedData.playTick();
 					
 					if(btn == btn_cat1)
 					{
@@ -84,6 +87,19 @@ public class CategoryMenuActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.category_menu, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onPause() {
+		sharedData.playMainBGM();
+		super.onPause();
+	}
+	
+	
+	@Override
+	protected void onResume() {
+		sharedData.playMainBGM();
+		super.onResume();
 	}
 	
 	void goToLevelSelection()

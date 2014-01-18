@@ -4,16 +4,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.media.SoundPool.OnLoadCompleteListener;
+import android.util.Log;
 
 public class GameManager{
 
 	private static GameManager mInstance;
  
 	private Context context;
+	private Activity activity;
 	private SharedPreferences prefs; // please don't f*ck with this
 	
+	// for the SFX
+	private SoundPool soundPool;
+	private int tadaSoundID, tickSoundID, wooshSoundID, kidSoundID;
+	private boolean loaded = false;
+	private AudioManager audioManager;
+	private float volume;
+	
+	// for the BGM
+	private MediaPlayer mediaPlayer;
 	
 	private int currentCategory;
 	private int currentLevel;
@@ -37,7 +53,10 @@ public class GameManager{
 		totalCategories = 5;
 		totalLevelsPerCategory = 3;
 		totalStagesPerLevel = 15;
-    	
+		
+		
+		
+		
     }
  
     public static GameManager getInstance(){
@@ -55,6 +74,51 @@ public class GameManager{
     	this.context = con;
     	// Once the context is set, we then init everything
     	initializeManager();
+    	//initializeAudio();
+    }
+    
+    public void initializeAudio(Activity act)
+    {
+    	this.activity = act;
+    	// Set the hardware buttons to control the music
+    	activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        // Load the sound
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+          @Override
+          public void onLoadComplete(SoundPool soundPool, int sampleId,
+              int status) {
+            loaded = true;
+          }
+        });
+        
+        
+        // Getting the user sound settings
+        audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+            .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+            .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume = actualVolume / maxVolume;
+        
+        tadaSoundID = soundPool.load(this.context, R.raw.tada, 1);
+        tickSoundID = soundPool.load(this.context, R.raw.tick, 1);
+        wooshSoundID = soundPool.load(this.context, R.raw.woosh, 1);
+        kidSoundID = soundPool.load(this.context, R.raw.kid_laugh, 1);
+        
+        if(mediaPlayer == null)
+        {
+        	mediaPlayer = MediaPlayer.create(activity, R.raw.gonna_start);
+        }
+        
+        if(isFirstTimeLaunch())
+        {
+        	setBGMEnabled(true);
+    		setSFXEnabled(true);
+        }
+        
+        
+        
     }
     
     private void initializeManager()
@@ -102,7 +166,12 @@ public class GameManager{
     	
     }
     
-    
+    public boolean isFirstTimeLaunch()
+    {
+    	prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+    	if(prefs.getBoolean("FirstTime", true)) return true;
+    	return false;
+    }
     
     public Map<String, Boolean> getAllLevels()
     {
@@ -211,6 +280,28 @@ public class GameManager{
 		this.answers.add(ans);
 	}
 
+	public boolean isSFXEnabled() 
+	{
+		prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+		
+		return prefs.getBoolean("sfx", false);
+	}
+
+	public void setSFXEnabled(boolean isSFXEnabled) {
+		prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+		prefs.edit().putBoolean("sfx", isSFXEnabled).commit();
+	}
+
+	public boolean isBGMEnabled() {
+		prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+		return prefs.getBoolean("bgm", false);
+	}
+
+	public void setBGMEnabled(boolean isBGMEnabled) {
+		prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
+		prefs.edit().putBoolean("bgm", isBGMEnabled).commit();
+	}
+
 	public boolean isLevelLocked(int catNum, int lvlNum)
     {
     	int numberOfCompletedStageForLevel = 0;
@@ -260,4 +351,71 @@ public class GameManager{
     	}
 		return false;
     }
+    
+    
+    public void playTick()
+    {
+        // Is the sound loaded already?
+    	if (loaded && isSFXEnabled()) {
+          soundPool.play(tickSoundID, volume, volume, 1, 0, 1f);
+          Log.e("Test", "Played sound");
+        }
+    }
+    
+    public void playTada()
+    {
+    	// Is the sound loaded already?
+    	if (loaded && isSFXEnabled()) {
+          soundPool.play(tadaSoundID, volume, volume, 1, 0, 1f);
+          //Log.e("Test", "Played sound");
+        }
+    }
+    
+    public void playKidLaugh()
+    {
+    	// Is the sound loaded already?
+    	if (loaded && isSFXEnabled()) {
+          soundPool.play(kidSoundID, volume, volume, 1, 0, 1f);
+          //Log.e("Test", "Played sound");
+        }
+    }
+    
+    public void playWoosh()
+    {
+    	// Is the sound loaded already?
+        if (loaded && isSFXEnabled()) {
+          soundPool.play(wooshSoundID, volume, volume, 1, 0, 1f);
+          //Log.e("Test", "Played sound");
+        }
+    }
+    
+    public void playMainBGM()
+    {
+    	//int currentSongTime = mediaPlayer.getCurrentPosition();
+    	
+    	if(mediaPlayer.isPlaying())
+    	{
+    		mediaPlayer.pause();
+    	}
+    	else
+    	{
+    		if(isBGMEnabled())
+    		{
+    			mediaPlayer.start();
+    			mediaPlayer.setLooping(true);
+    		}
+    		
+    	}
+    	
+    	/*
+    	new Thread(new Runnable() {
+            public void run() {
+            	
+            }
+        }).start();
+    	*/
+    	
+    }
+    
+    
 }
