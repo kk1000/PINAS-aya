@@ -83,7 +83,6 @@ public class LevelSelectionActivity extends Activity {
 		btn_lvlStatuses.add(btn_lvlStatus2);
 		btn_lvlStatuses.add(btn_lvlStatus3);
 		
-		
 		for(final Button btn : btn_lvls)
 		{
 			btn.setOnClickListener(new OnClickListener(){
@@ -137,6 +136,7 @@ public class LevelSelectionActivity extends Activity {
 					
 				}});
 		}
+		
 		
 	}
 
@@ -215,6 +215,9 @@ public class LevelSelectionActivity extends Activity {
 		{
 			btn_lvlState3.setText("Tap to choose");
 		}
+		
+		
+		
 		
 	}
 

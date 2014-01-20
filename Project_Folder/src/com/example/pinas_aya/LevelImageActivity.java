@@ -85,6 +85,7 @@ public class LevelImageActivity extends Activity {
 					//System.out.println(""+sharedData.getAnswers());
 					sharedData.playTada();
 					showDialogWithMessage("Stage Complete!");
+					
 				}
 				else
 				{
@@ -126,12 +127,21 @@ public class LevelImageActivity extends Activity {
 		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+		final String theMessage = message;
 		// 2. Chain together various setter methods to set the dialog characteristics
 		builder.setMessage(message)
 		       .setTitle(getResources().getString(R.string.app_name)).setNeutralButton("Dismiss", new DialogInterface.OnClickListener()
 		       {
 		    	   @Override
-		    	   public void onClick(DialogInterface dialog, int which) { dialog.dismiss();}
+		    	   public void onClick(DialogInterface dialog, int which) 
+		    	   { 
+		    		   dialog.dismiss();
+		    		   if(theMessage.equals("Stage Complete!"))
+		    		   {
+		    			   LevelImageActivity.this.onBackPressed();
+		    		   }
+		    		   
+		    	   }
 		       });
 		
 		

@@ -35,9 +35,9 @@ public class GameManager{
 	private int currentLevel;
 	private int currentStage;
 	
-	private int totalCategories;
-	private int totalLevelsPerCategory;
-	private int totalStagesPerLevel;
+	private final int totalCategories = 5;
+	private final int totalLevelsPerCategory = 3;
+	private final int totalStagesPerLevel = 15;
 	
 	private Map<String, Boolean> levels;
 	
@@ -49,14 +49,6 @@ public class GameManager{
 		levels = new HashMap<String, Boolean>();
     	
 		setAnswers(new ArrayList<AnswerObject>());
-		
-		totalCategories = 5;
-		totalLevelsPerCategory = 3;
-		totalStagesPerLevel = 15;
-		
-		
-		
-		
     }
  
     public static GameManager getInstance(){
@@ -304,24 +296,18 @@ public class GameManager{
 
 	public boolean isLevelLocked(int catNum, int lvlNum)
     {
-    	int numberOfCompletedStageForLevel = 0;
-		
+		int numberOfCompletedStageForLevel = 0;
 		
 		prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
-		
 		for(int i = 1; i <= this.totalStagesPerLevel; i++)
 		{
-			if(prefs.getBoolean(""+catNum+"-"+lvlNum+"-"+i, false))
+			if(prefs.getBoolean(""+catNum+"-"+(lvlNum-1)+"-"+i, false))
 			{
 				numberOfCompletedStageForLevel++;
 			}
-			
 		}
     	
-		if(numberOfCompletedStageForLevel < this.totalStagesPerLevel)
-		{
-			return true;
-		}
+		if(numberOfCompletedStageForLevel < this.totalStagesPerLevel) return true;
 		
 		return false;
     	

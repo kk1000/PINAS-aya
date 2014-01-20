@@ -1,3 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<answer category="1" level="1" stage="1" text1="elpidio" text2="quirino" text3="Yolo" text4=""/>
+<answer category="1" level="1" stage="1" text1="elpidio" text2="quirino" text3="elpidio quirino" text4=""/>
+<answer category="1" level="1" stage="2" text1="manuel" text2="roxas" text3="manuel roxas" text4=""/>
+<answer category="1" level="1" stage="3" text1="benigno" text2="aquino" text3="benigno aquino" text4=""/>
+<answer category="1" level="1" stage="4" text1="ferdinand" text2="marcos" text3="ferdinand marcos" text4=""/>
+<answer category="1" level="1" stage="5" text1="gloria" text2="arroyo" text3="gloria arroyo" text4=""/>
+<answer category="1" level="1" stage="6" text1="nora" text2="aunor" text3="nora aunor" text4=""/>
+<answer category="1" level="1" stage="7" text1="fernando" text2="poe" text3="fernando poe jr" text4="fpj"/>
+<answer category="1" level="1" stage="8" text1="joseph" text2="estrada" text3="joseph estrada" text4=""/>
+<answer category="1" level="1" stage="9" text1="vic" text2="marvic" text3="sotto" text4="vic sotto"/>
+<answer category="1" level="1" stage="10" text1="carlos" text2="garcia" text3="carlos garcia" text4=""/>
+<answer category="1" level="1" stage="11" text1="emilio" text2="aguinaldo" text3="emilio aguinaldo" text4=""/>
+<answer category="1" level="1" stage="12" text1="maricel" text2=" soriano" text3="maricel soriano" text4="diamond star"/>
+<answer category="1" level="1" stage="13" text1="vilma" text2="santos" text3="vilma santos" text4="ate vi"/>
+<answer category="1" level="1" stage="14" text1="sharon" text2="cuneta" text3="sharon cuneta" text4=""/>
+<answer category="1" level="1" stage="15" text1="rodolfo" text2="quizon" text3="rodolfo quizon" text4="dolphy"/>
+
+
+<answer category="2" level="1" stage="1" text1="tree sparrow" text2="sparrow" text3="maya" text4=""/>
+<answer category="2" level="1" stage="2" text1="philippine spotted dear" text2="usa" text3="dear" text4="philippine dear"/>
+<answer category="2" level="1" stage="3" text1="milkfish" text2="bangus" text3="" text4=""/>
+<answer category="2" level="1" stage="4" text1="sea turtle" text2="pawikan" text3="pagong dagat" text4=""/>
+<answer category="2" level="1" stage="5" text1="macaque" text2="crab-eating macaque" text3="unggoy" text4="jayvee"/>
+<answer category="2" level="1" stage="6" text1="quail" text2="pugo" text3="" text4=""/>
+<answer category="2" level="1" stage="7" text1="philippine gecko" text2="tuko" text3="gecko" text4=""/>
+<answer category="2" level="1" stage="8" text1="carabao" text2="kalabaw" text3="" text4=""/>
+<answer category="2" level="1" stage="9" text1="rooster" text2="tandang" text3="male chicken" text4="cock"/>
+<answer category="2" level="1" stage="10" text1="tamarao" text2="tamaraw" text3="" text4=""/>
+<answer category="2" level="1" stage="11" text1="whale shark" text2="butanding" text3="" text4=""/>
+<answer category="2" level="1" stage="12" text1="flying lemur" text2="kagwang" text3="lemur" text4="jayvee"/>
+<answer category="2" level="1" stage="13" text1="monitor lizard" text2="bayawak" text3="lizard" text4="jayvee"/>
+<answer category="2" level="1" stage="14" text1="phiippine eagle" text2="monkey-eating eagle" text3="agila" text4="eagle"/>
+<answer category="2" level="1" stage="15" text1="dwarf pygmy goby" text2="pygmy goby" text3="dilis" text4="pandaka pygmaea"/>
+
+
+<answer category="3" level="1" stage="1" text1="mat" text2="banig" text3="papag" text4=""/>
+<answer category="3" level="1" stage="2" text1="maracas" text2="marakas" text3="" text4=""/>
+<answer category="3" level="1" stage="3" text1="bungkaka" text2="bamboo flute" text3="flute" text4=""/>
+<answer category="3" level="1" stage="4" text1="bunot" text2="coconut sculp" text3="coconut" text4=""/>
+<answer category="3" level="1" stage="5" text1="tapayan" text2="jar" text3="water jar" text4=""/>
+<answer category="3" level="1" stage="6" text1="hat" text2="salakot" text3="" text4=""/>
+<answer category="3" level="1" stage="7" text1="bag" text2="bayong" text3="" text4=""/>
+<answer category="3" level="1" stage="8" text1="wooden slingshot" text2="tirador" text3="slingshot" text4=""/>
+<answer category="3" level="1" stage="9" text1="nipa hut" text2="bahay kubo" text3="kubo" text4="hut"/>
+<answer category="3" level="1" stage="10" text1="pot" text2="palayok" text3="clay pot" text4=""/>
+<answer category="3" level="1" stage="11" text1="top" text2="trumpo" text3="" text4=""/>
+<answer category="3" level="1" stage="12" text1="hand-held fan" text2="abaniko" text3="pamaypay" text4=""/>
+<answer category="3" level="1" stage="13" text1="gangsa" text2="gong" text3="drums" text4=""/>
+<answer category="3" level="1" stage="14" text1="yoyo" text2="" text3="" text4=""/>
+<answer category="3" level="1" stage="15" text1="kulintang" text2="gong" text3="gongs" text4=""/>
