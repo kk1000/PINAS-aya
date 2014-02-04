@@ -72,11 +72,8 @@ public class LevelImageActivity extends Activity {
 		
 		btn_submitImage.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
 			public void onClick(View v) {
-				
-				
 				
 				String input = txt_answer.getText().toString();
 				
@@ -94,11 +91,6 @@ public class LevelImageActivity extends Activity {
 				
 			}
 		});
-		
-		
-		
-		
-        
 		
 	}
 
@@ -161,10 +153,14 @@ public class LevelImageActivity extends Activity {
 					&& ans.getLevelNumber() == sharedData.getLevel() 
 					&& ans.getStageNumber() == sharedData.getStage())
 			{
-				if(Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer1()).find()
+				if((Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer1()).find()
 						|| ((ans.getAnswer2() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer2()).find(): false)
 						|| ((ans.getAnswer3() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer3()).find(): false)
-						|| ((ans.getAnswer4() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer4()).find(): false))
+						|| ((ans.getAnswer4() != null)?Pattern.compile(Pattern.quote(input), Pattern.CASE_INSENSITIVE).matcher(ans.getAnswer4()).find(): false)) 
+						&& (input.length() == ans.getAnswer1().length()
+								|| ((ans.getAnswer2() != null) ? input.length() == ans.getAnswer2().length(): false)
+								|| ((ans.getAnswer3() != null) ? input.length() == ans.getAnswer3().length(): false)
+								|| ((ans.getAnswer4() != null) ? input.length() == ans.getAnswer4().length(): false)))
 				{
 					
 					sharedData.completeCurrentStage();

@@ -65,59 +65,59 @@ public class LevelStatusActivity extends Activity {
 						sharedData.playTick();
 						setStage(1);
 					}
-					else if(img == img_lvlStages[1] && !isStageLocked(2))
+					else if(img == img_lvlStages[1] /*&& !isStageLocked(2) */)
 					{
 						setStage(2);
 					}
-					else if(img == img_lvlStages[2] && !isStageLocked(3))
+					else if(img == img_lvlStages[2] /* && !isStageLocked(3) */)
 					{
 						setStage(3);
 					}
-					else if(img == img_lvlStages[3] && !isStageLocked(4))
+					else if(img == img_lvlStages[3] /* && !isStageLocked(4) */)
 					{
 						setStage(4);
 					}
-					else if(img == img_lvlStages[4] && !isStageLocked(5))
+					else if(img == img_lvlStages[4] /* && !isStageLocked(5) */)
 					{
 						setStage(5);
 					}
-					else if(img == img_lvlStages[5] && !isStageLocked(6))
+					else if(img == img_lvlStages[5] /* && !isStageLocked(6) */)
 					{
 						setStage(6);
 					}
-					else if(img == img_lvlStages[6] && !isStageLocked(7))
+					else if(img == img_lvlStages[6] /* && !isStageLocked(7) */)
 					{
 						setStage(7);
 					}
-					else if(img == img_lvlStages[7] && !isStageLocked(8))
+					else if(img == img_lvlStages[7] /* && !isStageLocked(8) */ )
 					{
 						setStage(8);
 					}
-					else if(img == img_lvlStages[8] && !isStageLocked(9))
+					else if(img == img_lvlStages[8] /* && !isStageLocked(9) */ )
 					{
 						setStage(9);
 					}
-					else if(img == img_lvlStages[9] && !isStageLocked(10))
+					else if(img == img_lvlStages[9] /* && !isStageLocked(10) */)
 					{
 						setStage(10);
 					}
-					else if(img == img_lvlStages[10] && !isStageLocked(11))
+					else if(img == img_lvlStages[10] /* && !isStageLocked(11) */)
 					{
 						setStage(11);
 					}
-					else if(img == img_lvlStages[11] && !isStageLocked(12))
+					else if(img == img_lvlStages[11] /* && !isStageLocked(12) */)
 					{
 						setStage(12);
 					}
-					else if(img == img_lvlStages[12] && !isStageLocked(13))
+					else if(img == img_lvlStages[12] /* && !isStageLocked(13) */)
 					{
 						setStage(13);
 					}
-					else if(img == img_lvlStages[13] && !isStageLocked(14))
+					else if(img == img_lvlStages[13] /* && !isStageLocked(14) */)
 					{
 						setStage(14);
 					}
-					else if(img == img_lvlStages[14] && !isStageLocked(15))
+					else if(img == img_lvlStages[14] /* && !isStageLocked(15) */)
 					{
 						setStage(15);
 					}
@@ -193,7 +193,12 @@ public class LevelStatusActivity extends Activity {
 		int resourceId;
 		for(int i = 1; i <= 15; i++)
 		{
-			//Log.v("BOOL VALUE: ",""+sharedData.isCurrentStageLocked());
+			imgString += sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+i;
+			
+			resourceId = getResources().getIdentifier (imgString, "drawable", getPackageName().toString());
+			img_lvlStages[i-1].setImageResource(resourceId);
+			
+			/*
 			if(!sharedData.isStageLocked(sharedData.getCategory(), sharedData.getLevel(), i) || i == 1)
 			{
 				imgString += sharedData.getCategory()+"_"+sharedData.getLevel()+"_"+i;
@@ -206,6 +211,7 @@ public class LevelStatusActivity extends Activity {
 				img_lvlStages[i-1].setImageResource(R.drawable.ic_qmark_clear);
 			}
 			
+			*/
 			
 			imgString = "img_";
 			
