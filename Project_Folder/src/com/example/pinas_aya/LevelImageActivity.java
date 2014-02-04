@@ -1,12 +1,22 @@
 package com.example.pinas_aya;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +39,9 @@ public class LevelImageActivity extends Activity {
 	private ImageButton btn_submitImage;
 	
 	private GameManager sharedData;
+	
+	private ArrayList<DetailObject> details;
+	private DetailObject currentDetail;
 	
 	
 	@Override
@@ -61,12 +74,16 @@ public class LevelImageActivity extends Activity {
 		btn_viewDetails = (Button)findViewById(R.id.btn_viewDetails);
 		btn_submitImage = (ImageButton)findViewById(R.id.btn_submitImage);
 		
+		
+		
 		btn_viewDetails.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v) 
 			{
-				showDialogWithMessage("Details here");
+				
+				
+				showDialogWithMessage("" + currentDetail.getDetail1() + "\n" + currentDetail.getDetail2() );
 			}
 		});
 		
@@ -91,6 +108,11 @@ public class LevelImageActivity extends Activity {
 				
 			}
 		});
+		
+		
+		parseDetailsXML();
+		
+		pickDetail();
 		
 	}
 
@@ -180,4 +202,142 @@ public class LevelImageActivity extends Activity {
 		return false;
 	}
 
+	private void pickDetail()
+	{
+		sharedData = GameManager.getInstance();
+		DetailObject temp = new DetailObject();
+		
+		for(DetailObject obj : details)
+		{
+			if(obj.getCategoryNumber() == sharedData.getCategory()
+					&& obj.getLevelNumber() == sharedData.getLevel()
+					&& obj.getStageNumber() == sharedData.getStage())
+			{
+				temp = obj;
+				break;
+			}
+		}
+		
+		details = null;
+		
+		
+		if(currentDetail == null)
+        {
+			currentDetail = new DetailObject();
+        }
+        
+        currentDetail = temp;
+        
+	}
+	
+	private void parseDetailsXML()
+	{
+		// Load XML for parsing.
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open("details.xml");
+        } catch (IOException e) {
+            Log.e("tag", e.getMessage());
+        }
+
+        String xml = sharedData.readTextFile(inputStream);
+		
+        XmlPullParserFactory factory;
+		try {
+			factory = XmlPullParserFactory.newInstance();
+			//factory.setNamespaceAware(true);
+	        XmlPullParser xpp = factory.newPullParser();
+
+	        xpp.setInput(new StringReader (xml));
+	        int eventType = xpp.getEventType();
+	     
+	        DetailObject detail = new DetailObject();
+	        
+	        while (eventType != XmlPullParser.END_DOCUMENT) {
+	         if(eventType == XmlPullParser.START_DOCUMENT) {
+	             System.out.println("Start document");
+	            
+	             
+	         } else if(eventType == XmlPullParser.END_DOCUMENT) {
+	             System.out.println("End document");
+	             
+	             
+	             
+	             
+	             
+	         } else if(eventType == XmlPullParser.START_TAG) {
+	             System.out.println("Start tag "+xpp.getName());
+	             detail = null;
+	             detail = new DetailObject();
+	             
+	             String cat = xpp.getAttributeValue(null, "category");
+	             String lvl = xpp.getAttributeValue(null, "level");
+	             String stg = xpp.getAttributeValue(null, "stage");
+	             String detail1 = xpp.getAttributeValue(null, "text1");
+	             String detail2 = xpp.getAttributeValue(null, "text2");
+	             String detail3 = xpp.getAttributeValue(null, "text3");
+	             String detail4 = xpp.getAttributeValue(null, "text4");
+	             
+	             if(cat != null)
+	             {
+	            	 detail.setCategoryNumber(Integer.valueOf(cat));
+	             }
+	             else 
+	             {
+	            	 System.out.println("Category is Null");
+	             }
+	             
+	             if(lvl != null)
+	             {
+	            	 detail.setLevelNumber(Integer.valueOf(lvl));
+	             }
+	             else
+	             {
+	            	 System.out.println("Level is Null");
+	             }
+	             
+	             if(stg != null)
+	             {
+	            	 detail.setStageNumber(Integer.valueOf(stg));
+	             }
+	             else
+	             {
+	            	 System.out.println("Stage is Null");
+	             }
+	             
+	             detail.setDetail1(detail1);
+	             detail.setDetail2(detail2);
+	             detail.setDetail3(detail3);
+	             detail.setDetail4(detail4);
+	             
+	             
+	             if(details == null)
+	             {
+	            	 details = new ArrayList<DetailObject>();
+	             }
+	             
+	             details.add(detail);
+	             
+	             detail = null;
+	             
+	         } else if(eventType == XmlPullParser.END_TAG) {
+	             System.out.println("End tag "+xpp.getName());
+	             
+	             
+	             
+	         } else if(eventType == XmlPullParser.TEXT) {
+	             System.out.println("Text "+xpp.getText());
+	         }
+	         eventType = xpp.next();
+	        }
+		} catch (XmlPullParserException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
 }
