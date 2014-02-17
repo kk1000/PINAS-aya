@@ -1,7 +1,6 @@
 package com.example.pinas_aya;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -29,7 +28,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		sharedData = GameManager.getInstance();
+		sharedData = GameManager.getInstance(); // Getting the only instance of our GAME LOGIC
 		sharedData.setContext(getApplicationContext()); // this only needs to be called once
 		
 		sharedData.initializeAudio(this);
@@ -50,9 +49,10 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	
 	@Override
 	protected void onPause() {
-		sharedData.playMainBGM();
+		sharedData.playMainBGM(); // Background Music 
 		super.onPause();
 	}
 	
@@ -102,30 +102,33 @@ public class MainActivity extends Activity {
     	startActivity(mainMenu);
 	}
 	
+	// BEWARE: THIS IS WHAT YOU PAY ME FOR
 	private void parseXml()
 	{
 		// Load XML for parsing.
-        AssetManager assetManager = getAssets();
-        InputStream inputStream = null;
+        AssetManager assetManager = getAssets(); // Reference to our Assets Folder
+        InputStream inputStream = null; // Stream where we want the data to go through
         try {
-            inputStream = assetManager.open("answers.xml");
+            inputStream = assetManager.open("answers.xml"); // From the assets folder we open the stream of data from the xml file
+            // NOTE: answer.xml contains all the answers for word related gameplay
         } catch (IOException e) {
             Log.e("tag", e.getMessage());
         }
 
-        String xml = sharedData.readTextFile(inputStream);
+        String xml = sharedData.readTextFile(inputStream); // Using our XML serializer we convert the InputStrem to a string
 		
-        XmlPullParserFactory factory;
+        XmlPullParserFactory factory; // An xml utility class
 		try {
-			factory = XmlPullParserFactory.newInstance();
+			factory = XmlPullParserFactory.newInstance(); // Creating new instance for our utility
 			//factory.setNamespaceAware(true);
-	        XmlPullParser xpp = factory.newPullParser();
+	        XmlPullParser xpp = factory.newPullParser(); // The Parser Class from our utility instance
 
-	        xpp.setInput(new StringReader (xml));
+	        xpp.setInput(new StringReader (xml)); // then new we read the xml file
 	        int eventType = xpp.getEventType();
 	     
-	        AnswerObject ans = new AnswerObject();
+	        AnswerObject ans = new AnswerObject(); // Creating an instance of a Model Class to hold an answer
 	        
+	        // Here is how we read the XML TAGS (WE LOOP IT!!!)
 	        while (eventType != XmlPullParser.END_DOCUMENT) {
 	         if(eventType == XmlPullParser.START_DOCUMENT) {
 	             System.out.println("Start document");
@@ -136,9 +139,10 @@ public class MainActivity extends Activity {
 	             
 	         } else if(eventType == XmlPullParser.START_TAG) {
 	             System.out.println("Start tag "+xpp.getName());
-	             ans = null;
-	             ans = new AnswerObject();
+	             ans = null; // clearing the model class just to make sure no data is left behind the previous iteration
+	             ans = new AnswerObject(); // then re-instanciated to allocate memory
 	             
+	             // PAY CLOSE ATTENTION AS WE NOW TAKE VALUES FROM THE XML TAGS
 	             String cat = xpp.getAttributeValue(null, "category");
 	             String lvl = xpp.getAttributeValue(null, "level");
 	             String stg = xpp.getAttributeValue(null, "stage");
@@ -149,7 +153,8 @@ public class MainActivity extends Activity {
 	             
 	             if(cat != null)
 	             {
-	            	 ans.setCategoryNumber(Integer.valueOf(cat));
+	            	 ans.setCategoryNumber(Integer.valueOf(cat)); // on the AnswerObject which is a model class
+	            	 // we set their category (FUCK! READ THE AnswerObject.java)
 	             }
 	             else 
 	             {
@@ -174,14 +179,16 @@ public class MainActivity extends Activity {
 	            	 System.out.println("Stage is Null");
 	             }
 	             
+	             // Then we set the answers here
 	             ans.setAnswer1(ans1);
 	             ans.setAnswer2(ans2);
 	             ans.setAnswer3(ans3);
 	             ans.setAnswer4(ans4);
 	             
+	             // Then we store them to our GameManager or GAME LOGIC
 	             sharedData.addAnswer(ans);
 	             
-	             ans = null;
+	             ans = null; // then deallocate the answer instance from the memory
 	             
 	         } else if(eventType == XmlPullParser.END_TAG) {
 	             System.out.println("End tag "+xpp.getName());

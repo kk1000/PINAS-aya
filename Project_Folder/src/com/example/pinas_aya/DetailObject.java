@@ -1,5 +1,7 @@
 package com.example.pinas_aya;
 
+//THIS IS JUST A MODEL CLASS TO STORE DATA
+
 public class DetailObject {
 	
 	private int categoryNumber;

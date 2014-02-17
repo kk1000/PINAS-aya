@@ -83,7 +83,7 @@ public class MainMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				showDialogWithMessage("Please pay the other half to finalize");
+				showDialogWithMessage("Goodluck getting a Job in the IT Industry after you graduate");
 				
 			}
 		});

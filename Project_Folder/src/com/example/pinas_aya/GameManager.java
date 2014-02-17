@@ -18,20 +18,22 @@ import android.util.Log;
 
 public class GameManager{
 
-	private static GameManager mInstance;
+	private static GameManager mInstance; // The only GameManager instance we'll use on runtime
  
+	// These are all private variables because we want to access them as properties!!!
 	private Context context;
 	private Activity activity;
+	// Where we store data on the device
 	private SharedPreferences prefs; // please don't f*ck with this
 	
-	// for the SFX
+	// for the SFX (Sound Effects)
 	private SoundPool soundPool;
 	private int tadaSoundID, tickSoundID, wooshSoundID, kidSoundID;
 	private boolean loaded = false;
 	private AudioManager audioManager;
 	private float volume;
 	
-	// for the BGM
+	// for the BGM (Background Music)
 	private MediaPlayer mediaPlayer;
 	
 	private int currentCategory;
@@ -42,21 +44,23 @@ public class GameManager{
 	private final int totalLevelsPerCategory = 3;
 	private final int totalStagesPerLevel = 15;
 	
+	// We use this to store information on Game Logic about levels
 	private Map<String, Boolean> levels;
-	
+	// same goes here
 	private ArrayList<AnswerObject> answers;
 	
 	private GameManager(){
        // Initialize all global game data here
-    	
+    	// Then we initialize them here
 		levels = new HashMap<String, Boolean>();
     	
 		setAnswers(new ArrayList<AnswerObject>());
     }
  
+	// This method is used to game the GameManage instance anywhere
     public static GameManager getInstance(){
         
-    	if(mInstance == null)
+    	if(mInstance == null) // is Not Existing
         {
             mInstance = new GameManager();
         }
@@ -72,6 +76,7 @@ public class GameManager{
     	//initializeAudio();
     }
     
+    // For the GAME SOUNDS
     public void initializeAudio(Activity act)
     {
     	this.activity = act;
@@ -106,6 +111,8 @@ public class GameManager{
         	mediaPlayer = MediaPlayer.create(activity, R.raw.gonna_start);
         }
         
+        
+        // IF FIRST TIME or if the app is started for the first time (Common sense gamitin)
         if(isFirstTimeLaunch())
         {
         	setBGMEnabled(true);
@@ -118,13 +125,18 @@ public class GameManager{
     
     private void initializeManager()
     {
+    	// Here we get the device storage instance
     	prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
     	
+    	// check is first time launch
     	if(prefs.getBoolean("FirstTime", true))
     	{
+    		// sets the "FirstTime" key on the device to false since we alreadt launch it once
     		prefs.edit().putBoolean("FirstTime", false).commit();
     		
     		// CategoryNumber-LevelNumber-StageNumber format
+    		// We write data on the device to have reference for our stages
+    		// All is false since non is completed yet
         	for(int c = 1; c <= totalCategories; c++)
         	{
         		for(int l = 1; l <= totalLevelsPerCategory; l++)
@@ -139,7 +151,7 @@ public class GameManager{
         	
         	//prefs.edit().commit();
     	}
-    	else
+    	else // Else if already started the app more than once
     	{
     		// CategoryNumber-LevelNumber-StageNumber format
         	for(int c = 1; c <= totalCategories; c++)
@@ -161,12 +173,15 @@ public class GameManager{
     	
     }
     
+    // The Validation for First Time Launch (Which we only use at start)
     public boolean isFirstTimeLaunch()
     {
     	prefs = this.context.getSharedPreferences("com.example.pinas-aya", Context.MODE_PRIVATE);
     	if(prefs.getBoolean("FirstTime", true)) return true;
     	return false;
     }
+    
+    //THE REST ARE JUST PROPERTIES DECLARATION
     
     public Map<String, Boolean> getAllLevels()
     {
@@ -406,6 +421,8 @@ public class GameManager{
     	
     }
     
+    
+    // An XML Seriallizer Method
     public String readTextFile(InputStream inputStream) {
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
